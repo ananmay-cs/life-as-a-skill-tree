@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import random
 from skill_trees import SKILL_TREES
 
 
@@ -24,8 +25,61 @@ ACHIEVEMENTS = {
     "Data Scientist": "🧪 Data Scientist"
 }
 
+style = ttk.Style()
+
+style.theme_use("default")
+
+style.configure(
+    "Game.Horizontal.TProgressbar",
+    thickness=25,
+    troughcolor="#2A2A2A",
+    background="#00FF88"
+)
+
+
+def get_title(level):
+
+    if level <= 2:
+        return "🌱 Beginner"
+
+    elif level <= 4:
+        return "⚔️ Apprentice"
+
+    elif level <= 6:
+        return "🔥 Specialist"
+
+    elif level <= 8:
+        return "👑 Expert"
+
+    else:
+        return "💀 Legend"
+
+
+def animate_xp(target):
+
+    current = xp_bar["value"]
+
+    if current < target:
+
+        xp_bar["value"] = current + 5
+
+        root.after(
+            10,
+            lambda: animate_xp(target)
+        )
+
+    elif current > target:
+
+        xp_bar["value"] = current - 5
+
+        root.after(
+            10,
+            lambda: animate_xp(target)
+        )
+
 
 def generate_tree():
+
     goal = goal_var.get()
 
     user_skills = [
@@ -47,7 +101,28 @@ def generate_tree():
     xp = progress * 200
     level = (xp // 300) + 1
 
-    xp_bar["value"] = min(xp, 1200)
+    title_rank = get_title(level)
+
+    completion = int(
+        (progress / len(tree)) * 100
+    )
+
+    quests = [
+        "Study for 30 minutes",
+        "Learn one new concept",
+        "Push code to GitHub",
+        "Watch one ML tutorial",
+        "Read documentation",
+        "Build a small project",
+        "Fix one annoying bug",
+        "Learn one new Python trick",
+        "Touch grass for 10 minutes 🌱",
+        "Stop procrastinating (Impossible Mode)"
+    ]
+
+    daily_quest = random.choice(quests)
+
+    animate_xp(min(xp, 1200))
 
     if progress < len(tree):
         current_quest = tree[progress]
@@ -79,24 +154,42 @@ def generate_tree():
 
     if unlocked_skills:
 
-        for skill in unlocked_skills:
+    latest_skill = unlocked_skills[-1]
 
-            if skill in ACHIEVEMENTS:
-                achievement_output += (
-                    f"🏆 {ACHIEVEMENTS[skill]}\n"
-                )
-
-    else:
-        achievement_output = (
-            "No achievements unlocked yet.\n"
-        )
-
-    player_class = goal.replace(
-        "Engineer",
-        "Aspirant"
+    achievement_banner.config(
+        text=f"🏆 {ACHIEVEMENTS.get(latest_skill, latest_skill)}"
     )
 
+    for skill in unlocked_skills:
+
+        if skill in ACHIEVEMENTS:
+
+            achievement_output += (
+                f"🏆 {ACHIEVEMENTS[skill]}\n"
+            )
+        
+    else:
+
+    achievement_banner.config(
+        text="🏆 No achievements unlocked"
+    )
+
+    achievement_output = (
+        "No achievements unlocked yet.\n"
+    )
+
+    classes = {
+    "AI Engineer": "🧙 AI Mage",
+    "Web Developer": "⚔️ Web Knight",
+    "Data Scientist": "🧪 Data Alchemist"
+}
+
+    player_class = classes.get(
+    goal,
+    "🎮 Adventurer"
+)
     result_text = (
+
         "══════════════════════\n\n"
 
         f"🧙 CLASS\n"
@@ -105,11 +198,20 @@ def generate_tree():
         f"🎮 LEVEL\n"
         f"{level}\n\n"
 
+        f"👑 TITLE\n"
+        f"{title_rank}\n\n"
+
         f"⭐ XP\n"
         f"{xp}\n\n"
 
+        f"📈 TREE COMPLETION\n"
+        f"{completion}%\n\n"
+
         f"🎯 CURRENT QUEST\n"
         f"{current_quest}\n\n"
+
+        f"📜 DAILY QUEST\n"
+        f"{daily_quest}\n\n"
 
         "══════════════════════\n\n"
 
@@ -127,7 +229,6 @@ def generate_tree():
     result_label.config(
         text=result_text
     )
-
 
 root = tk.Tk()
 
@@ -212,22 +313,44 @@ xp_title.pack()
 
 xp_bar = ttk.Progressbar(
     root,
+    style="Game.Horizontal.TProgressbar",
     length=500,
     maximum=1200
 )
 
 xp_bar.pack(pady=10)
 
-result_label = tk.Label(
+achievement_banner = tk.Label(
     root,
-    text="Choose a goal and begin your journey.",
+    text="🏆 No achievements unlocked",
     bg="#121212",
-    fg="white",
-    font=("Consolas", 12),
-    justify="left"
+    fg="#FFD700",
+    font=("Segoe UI", 11, "bold")
 )
 
-result_label.pack(pady=20)
+achievement_banner.pack(pady=10)
+
+card_frame = tk.Frame(
+    root,
+    bg="#1E1E1E",
+    highlightbackground="#00FF88",
+    highlightthickness=2
+)
+
+card_frame.pack(pady=20)
+
+result_label = tk.Label(
+    card_frame,
+    text="Choose a goal and begin your journey.",
+    bg="#1E1E1E",
+    fg="white",
+    font=("Consolas", 12),
+    justify="left",
+    padx=20,
+    pady=20
+)
+
+result_label.pack()
 
 footer = tk.Label(
     root,
@@ -237,6 +360,9 @@ footer = tk.Label(
     font=("Segoe UI", 9)
 )
 
-footer.pack(side="bottom", pady=15)
+footer.pack(
+    side="bottom",
+    pady=15
+)
 
 root.mainloop()
