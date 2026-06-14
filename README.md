@@ -104,16 +104,6 @@ The app is surprisingly honest.
 
 ---
 
-## 📸 Screenshot
-
-Add your screenshot here:
-
-```md
-![Screenshot](images/screenshot.png)
-```
-
----
-
 ## 🚀 Running The Project
 
 Clone the repo:
