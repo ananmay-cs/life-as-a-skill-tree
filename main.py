@@ -201,13 +201,16 @@ def open_skill_map():
     skill_map_window.title("Skill Map")
     skill_map_window.geometry("760x420")
     skill_map_window.resizable(True, True)
+    skill_map_window.columnconfigure(0, weight=1)
+    skill_map_window.rowconfigure(0, weight=1)
     canvas = tk.Canvas(skill_map_window, bg="#121212", highlightthickness=0)
-    canvas.pack(fill="both", expand=True, padx=20, pady=20)
+    canvas.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
     goal = goal_var.get()
     tree = SKILL_TREES.get(goal, [])
     progress = current_state.get("progress", 0)
+    skill_map_window.update_idletasks()
     draw_skill_map(canvas, tree, progress)
-    canvas.bind("<Configure>", lambda event: draw_skill_map(canvas, tree, progress))
+    skill_map_window.bind("<Configure>", lambda event: draw_skill_map(canvas, tree, progress))
 
 
 def draw_skill_map(canvas, tree, progress):
