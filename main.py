@@ -232,7 +232,7 @@ style.configure(
 )
 
 root.title("Life As A Skill Tree 🎮")
-root.geometry("950x950")
+root.geometry("1000x1000")
 root.configure(bg="#121212")
 
 title = tk.Label(
@@ -346,7 +346,9 @@ result_label = tk.Label(
     font=("Consolas", 12),
     justify="left",
     padx=20,
-    pady=20
+    pady=20,
+    wraplength=700,
+    anchor="w"
 )
 
 result_label.pack()
