@@ -1,0 +1,12 @@
+{
+  "goal": "AI Engineer",
+  "skills": "Python",
+  "xp": 200,
+  "level": 1,
+  "completion": 16,
+  "achievements": [
+    "🐍 Python Survivor"
+  ],
+  "daily_quest": "Practice a new algorithm",
+  "main_quest": "Unlock AI Engineer"
+}
