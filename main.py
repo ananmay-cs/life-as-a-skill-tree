@@ -25,16 +25,6 @@ ACHIEVEMENTS = {
     "Data Scientist": "🧪 Data Scientist"
 }
 
-style = ttk.Style()
-
-style.theme_use("default")
-
-style.configure(
-    "Game.Horizontal.TProgressbar",
-    thickness=25,
-    troughcolor="#2A2A2A",
-    background="#00FF88"
-)
 
 
 def get_title(level):
@@ -153,25 +143,23 @@ def generate_tree():
     unlocked_skills = tree[:progress]
 
     if unlocked_skills:
-
-    latest_skill = unlocked_skills[-1]
-
-    achievement_banner.config(
-        text=f"🏆 {ACHIEVEMENTS.get(latest_skill, latest_skill)}"
-    )
-
-    for skill in unlocked_skills:
-
-        if skill in ACHIEVEMENTS:
-
-            achievement_output += (
-                f"🏆 {ACHIEVEMENTS[skill]}\n"
-            )
+        latest_skill = unlocked_skills[-1]
         
+        achievement_banner.config(
+            text=f"🏆 {ACHIEVEMENTS.get(latest_skill, latest_skill)}"
+        )
+        
+        for skill in unlocked_skills:
+            if skill in ACHIEVEMENTS:
+                
+                achievement_output += (
+                    f"🏆 {ACHIEVEMENTS[skill]}\n"
+            )
+                
     else:
-
-    achievement_banner.config(
-        text="🏆 No achievements unlocked"
+        
+        achievement_banner.config(
+            text="🏆 No achievements unlocked"
     )
 
     achievement_output = (
@@ -232,8 +220,19 @@ def generate_tree():
 
 root = tk.Tk()
 
+style = ttk.Style()
+
+style.theme_use("default")
+
+style.configure(
+    "Game.Horizontal.TProgressbar",
+    thickness=25,
+    troughcolor="#2A2A2A",
+    background="#00FF88"
+)
+
 root.title("Life As A Skill Tree 🎮")
-root.geometry("800x850")
+root.geometry("950x950")
 root.configure(bg="#121212")
 
 title = tk.Label(
@@ -333,7 +332,7 @@ achievement_banner.pack(pady=10)
 card_frame = tk.Frame(
     root,
     bg="#1E1E1E",
-    highlightbackground="#00FF88",
+    highlightbackground="#BB86FC",
     highlightthickness=2
 )
 
