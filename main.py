@@ -138,33 +138,22 @@ def generate_tree():
             tree_output += "    │\n"
             tree_output += "    ▼\n"
 
-    achievement_output = ""
-
     unlocked_skills = tree[:progress]
+    achievement_output = ""
 
     if unlocked_skills:
         latest_skill = unlocked_skills[-1]
-        
         achievement_banner.config(
             text=f"🏆 {ACHIEVEMENTS.get(latest_skill, latest_skill)}"
         )
-        
+
         for skill in unlocked_skills:
             if skill in ACHIEVEMENTS:
-                
-                achievement_output += (
-                    f"🏆 {ACHIEVEMENTS[skill]}\n"
-            )
-                
-    else:
-        
-        achievement_banner.config(
-            text="🏆 No achievements unlocked"
-    )
+                achievement_output += f"🏆 {ACHIEVEMENTS[skill]}\n"
 
-    achievement_output = (
-        "No achievements unlocked yet.\n"
-    )
+    else:
+        achievement_banner.config(text="🏆 No achievements unlocked")
+        achievement_output = "No achievements unlocked yet.\n"
 
     classes = {
     "AI Engineer": "🧙 AI Mage",
@@ -214,9 +203,10 @@ def generate_tree():
         "\n══════════════════════"
     )
 
-    result_label.config(
-        text=result_text
-    )
+    result_text_widget.config(state="normal")
+    result_text_widget.delete("1.0", "end")
+    result_text_widget.insert("1.0", result_text)
+    result_text_widget.config(state="disabled")
 
 root = tk.Tk()
 
@@ -336,22 +326,22 @@ card_frame = tk.Frame(
     highlightthickness=2
 )
 
-card_frame.pack(pady=20)
+card_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-result_label = tk.Label(
+result_text_widget = tk.Text(
     card_frame,
-    text="Choose a goal and begin your journey.",
     bg="#1E1E1E",
     fg="white",
     font=("Consolas", 12),
-    justify="left",
+    wrap="word",
     padx=20,
     pady=20,
-    wraplength=700,
-    anchor="w"
+    bd=0,
+    highlightthickness=0,
+    state="disabled"
 )
 
-result_label.pack()
+result_text_widget.pack(fill="both", expand=True)
 
 footer = tk.Label(
     root,
